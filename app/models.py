@@ -1,12 +1,11 @@
 from django.db import models  
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 class CustomUser(AbstractUser): 
     date_of_birth = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
  
-
+    
     def __str__(self):
         return self.username
     
@@ -45,5 +44,7 @@ class Comment(models.Model):
         ordering = ["created_on"]
 
     def __str__(self):
-        return "Comment {} by {}".format(self.body, CustomUser.username)
+        user = CustomUser.objects.get(id=1)
+        print(user.username)
+        return "Comment {} by {}".format(self.body, user.username)
 
