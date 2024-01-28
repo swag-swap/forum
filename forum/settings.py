@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
 if 'RENDER_EXTERNAL_URL' in os.environ:
-    DATABASE_URL = os.getenv('RENDER_EXTERNAL_URL')
+    DATABASE_URL = os.environ.get('RENDER_EXTERNAL_URL')
     print('Databse url is', DATABASE_URL)
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL)
