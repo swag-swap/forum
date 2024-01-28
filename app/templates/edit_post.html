@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 card mb-4  mt-3 left  top">
+            <div class="card-body">
+                    {% if user_authenticated and post.author == request.user %} 
+                    <h1>Edit Post</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Save changes</button>
+                    </form>
+                    {# Include CKEditor assets #}
+                    {{ form.media }}
+                    {% else %}
+                    <h2>You are not the author of the Post</h2>
+                    <p class="card-title">Please <a href="{% url 'login_user' %}">Login</a> with correct user</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
