@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+
 
 # Application definition
 
@@ -78,9 +83,9 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
 import os
-if 'DATABASE_URL' in os.environ:
+if 'RENDER_EXTERNAL_URL' in os.environ:
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.parse(os.environ.get('RENDER_EXTERNAL_URL'))
     }
 else:
     print("Postgres URL not found, using sqlite instead")
