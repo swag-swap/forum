@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://localhost','https://forum-qomi.onrender.com','http://27.0.0.1']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -84,12 +84,9 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
-if 'RENDER_EXTERNAL_URL' in os.environ:
-    DATABASE_URL = os.environ.get('RENDER_EXTERNAL_URL')
-    print('Databse url is', DATABASE_URL)
+if not DEBUG:
     DATABASES = {
-        'default': dj_database_url.parse(default=DATABASE_URL)
-        # 'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(os.environ.get('RENDER_EXTERNAL_URL'))
     }
 else:
     print("Postgres URL not found, using sqlite instead")
