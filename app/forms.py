@@ -4,12 +4,17 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
-    date_of_birth = forms.DateField(help_text='Enter your date of birth (optional)', required=False)
-    profile_picture = forms.ImageField(help_text='Upload your profile picture (optional)', required=False) 
+    date_of_birth = forms.DateField(required=False)
+    profile_picture = forms.ImageField(required=False) 
 
     class Meta:
         model = CustomUser
         fields = UserCreationForm.Meta.fields + ('date_of_birth', 'profile_picture')
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+ 
+
  
 
 
