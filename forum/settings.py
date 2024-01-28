@@ -1,3 +1,4 @@
+import os
 """
 Django settings for forum project.
 
@@ -82,7 +83,6 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
-import os
 if 'RENDER_EXTERNAL_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('RENDER_EXTERNAL_URL'))
