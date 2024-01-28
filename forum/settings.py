@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['https://localhost','https://forum-qomi.onrender.com','http://2
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
+ 
 
 
 # Application definition
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 import dj_database_url
 if not DEBUG:
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('RENDER_EXTERNAL_URL'))
+        'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
     }
 else:
     print("Postgres URL not found, using sqlite instead")
