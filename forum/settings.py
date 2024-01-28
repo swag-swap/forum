@@ -88,7 +88,7 @@ if 'RENDER_EXTERNAL_URL' in os.environ:
     DATABASE_URL = os.environ.get('RENDER_EXTERNAL_URL')
     print('Databse url is', DATABASE_URL)
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
+        'default': dj_database_url.parse(default=DATABASE_URL)
         # 'default': dj_database_url.parse(DATABASE_URL)
     }
 else:
