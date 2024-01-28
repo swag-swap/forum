@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,6 +86,7 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 import dj_database_url
 if 'RENDER_EXTERNAL_URL' in os.environ:
     DATABASE_URL = os.getenv('RENDER_EXTERNAL_URL')
+    print('Databse url is', DATABASE_URL)
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL)
     }
@@ -138,6 +140,8 @@ USE_TZ = True
 import os 
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR/'assets'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = "uploads/"

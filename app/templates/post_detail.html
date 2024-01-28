@@ -5,6 +5,7 @@
 
     <div class="container">
         <div class="row">
+            
             <div class="col-md-12 card mb-4  mt-3 left  top">
                 <div class="card-body">
                     <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
@@ -25,7 +26,8 @@
                             <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
                         </form> 
                     {% else %}
-                        <button type="submit" name="edit_comment" value="{{ comment.id }}" disabled>Edit Comment (Login to Edit)</button>
+                        <button  type="submit" name="edit_comment" value="{{ comment.id }}" ><a href="{% url 'login_user' %}">Login</a></button> to add comment
+                        
                     {% endif %}
                     
                 </div>

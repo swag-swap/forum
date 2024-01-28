@@ -3,17 +3,19 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import login, authenticate
-from .forms import CustomUserCreationForm, CommentForm, PostForm
+from django.contrib.auth import logout as auth_logout
+from .forms import CustomUserCreationForm, CommentForm, PostForm, SearchForm
 from .models import Post, Comment
+from django.db.models import Q
 
  
 def homePage(request):
-    user = request.user if request.user.is_authenticated else None
+    user_authenticated = request.user.is_authenticated
 
     all_posts = Post.objects.all()
 
     paginator = Paginator(all_posts, 5)   
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
 
     try:
         posts = paginator.page(page)
@@ -22,7 +24,17 @@ def homePage(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'home.html', {'user': user, 'posts': posts})
+    form = SearchForm(request.GET)
+    query = request.GET.get('query', '')
+    # print(form)
+
+    if query:
+        # Perform the search using case-insensitive and partial matching
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).distinct()
+
+    return render(request, 'home.html', {'user_authenticated': user_authenticated, 'posts': posts, 'form': form, 'query': query})
 
 
 def register_user(request):
@@ -67,7 +79,7 @@ def post_detail(request, slug):
 
     if request.method == "POST": 
         comment_form = CommentForm(data=request.POST)
-        print(comment_form)
+        # print(comment_form)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.post = post
@@ -81,6 +93,7 @@ def post_detail(request, slug):
         'post_detail.html',
         {
             "username": username,
+            'user_authenticated': user_authenticated,
             "slug": slug,
             "user_authenticated": user_authenticated,
             "post": post,
@@ -115,3 +128,38 @@ def edit_post(request, slug):
             'username':username
         }
     )
+
+def create_post(request):
+    user_authenticated = request.user.is_authenticated
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.slug = Post.create_unique_slug(post)
+            post.author = request.user  
+            post.save()
+            return redirect('post_detail', slug=post.slug)   
+    else:
+        form = PostForm()
+
+    return render(request, 'create_post.html', {'form': form, 'user_authenticated': user_authenticated})
+
+
+def post_list(request):
+    form = SearchForm(request.GET)
+    query = request.GET.get('query', '')
+
+    if query:
+        # Perform the search using case-insensitive and partial matching
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.all()
+
+    return render(request, 'post_list.html', {'posts': posts, 'form': form, 'query': query})
+
+
+def my_logout(request):
+    auth_logout(request)
+    return redirect('/')

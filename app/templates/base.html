@@ -20,8 +20,7 @@
     <body>
 
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow navbar-fixed-top" id="mainNav">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url 'home' %}">Forum</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -29,19 +28,30 @@
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+    
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        {% if user %}
-                            <li class="nav-item text-black">
-                                <a class="nav-link text-black font-weight-bold" href="#">{{ user.username }}</a>
-                            </li> 
-                        {% endif %}
+                        
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav ml-auto">
+                                {% if user_authenticated %}
+                                    <a class="nav-link text-black font-weight-bold" href="{% url 'create_post' %}">Create a post</a>
+                                    <a class="nav-link text-black font-weight-bold" href="#">{{ user.username }}</a>
+                                    <form action="{% url 'logout' %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="nav-link text-black font-weight-bold" style="border: none; background: none; cursor: pointer;">Logout</button>
+                                    </form>
+                                {% else %}
+                                    <a class="nav-link text-black font-weight-bold" href="{% url 'login_user' %}">Login</a> 
+                                    <p class="nav-link text-black font-weight-bold" >/</p>
+                                    <a class="nav-link text-black font-weight-bold" href="{% url 'register_user' %}">Signup</a> 
+                                {% endif %}
+                            </ul>
+                        </div>
                     </ul>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
 
     {% block content %}
@@ -49,10 +59,7 @@
     {% endblock content %}
 
     <!-- Footer -->
-    <footer class="py-3 bg-grey">
-        <p class="m-0 text-dark text-center ">Copyright &copy; Forum</p>
-    </footer>
-    <!-- bootstrap scripts -->
+    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>

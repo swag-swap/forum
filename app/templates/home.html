@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
+ 
+<form id="searchForm" method="get"  class="form-inline mx-auto justify-content-center fix">
+    <div class="form-group mb-2">
+        <label  for="id_query" class="sr-only">Search</label>
+        <input type="text" name="query" placeholder="Search" required id="id_query"
+            class="form-control">
+    </div>
+    <a href="{% url 'home' %}"  class="btn btn-primary mb-2">Search</a>
+</form>
 
 <div class="container w-full">
     <div class="row">
