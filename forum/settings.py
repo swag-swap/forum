@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 """
 Django settings for forum project.
 
@@ -26,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
-ALLOWED_HOSTS = ['https://localhost','https://forum-qomi.onrender.com','http://27.0.0.1']
+ALLOWED_HOSTS = ['localhost:8000','forum-qomi.onrender.com','127.0.0.1']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -84,18 +88,18 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
-if not DEBUG:
-    DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
-    }
-else:
-    print("Postgres URL not found, using sqlite instead")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+# if not DEBUG:
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
+}
+# else:
+#     print("Postgres URL not found, using sqlite instead")
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
  
 
 AUTH_USER_MODEL = 'app.CustomUser'
@@ -140,17 +144,17 @@ import os
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR/'assets'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CKEDITOR_UPLOAD_PATH = "uploads/"
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# CKEDITOR_UPLOAD_PATH = "uploads/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': 800,
-    },
-}
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'full',
+#         'height': 300,
+#         'width': 800,
+#     },
+# }
 
 
 
