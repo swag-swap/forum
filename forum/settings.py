@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t%7xs-f!@b6u(&urb6m^r@gz-1desqc8sh8^1zf60r$rtd_k6r'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,7 +88,8 @@ if 'RENDER_EXTERNAL_URL' in os.environ:
     DATABASE_URL = os.environ.get('RENDER_EXTERNAL_URL')
     print('Databse url is', DATABASE_URL)
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.config(default=DATABASE_URL)
+        # 'default': dj_database_url.parse(DATABASE_URL)
     }
 else:
     print("Postgres URL not found, using sqlite instead")
