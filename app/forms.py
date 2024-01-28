@@ -1,5 +1,5 @@
 from django import forms
-from ckeditor.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser, Comment, Post
 
@@ -19,7 +19,7 @@ class CommentForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
-    content = RichTextUploadingField(config_name='awesome_ckeditor')
+    content = RichTextField(config_name='awesome_ckeditor')
     class Meta:
         model = Post
         fields = ['title', 'content']

@@ -1,7 +1,7 @@
 from django.db import models  
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from ckeditor.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 
 class CustomUser(AbstractUser): 
     date_of_birth = models.DateField(null=True, blank=True)
@@ -19,7 +19,7 @@ class Post(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name="post_author"
     )
     updated_on = models.DateTimeField(auto_now=True)
-    content = RichTextUploadingField()
+    content = RichTextField()
     created_on = models.DateTimeField(auto_now_add=True)  
 
     class Meta:
