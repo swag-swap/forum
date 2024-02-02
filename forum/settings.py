@@ -89,17 +89,17 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import dj_database_url
 # if not DEBUG:
-# DATABASES = {
-#     'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
-# }
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
+}
 # else:
 #     print("Postgres URL not found, using sqlite instead")
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
  
 
 AUTH_USER_MODEL = 'app.CustomUser'
