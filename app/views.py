@@ -29,7 +29,6 @@ def homePage(request):
     # print(form)
 
     if query:
-        # Perform the search using case-insensitive and partial matching
         posts = Post.objects.filter(
             Q(title__icontains=query) | Q(content__icontains=query)
         ).distinct()
@@ -76,6 +75,7 @@ def post_detail(request, slug):
     post_form = PostForm(instance=post)  
     user_authenticated = request.user.is_authenticated
     username = request.user.username
+    attachment = request.FILES.get('attachment')
 
     if request.method == "POST": 
         comment_form = CommentForm(data=request.POST)
@@ -101,6 +101,7 @@ def post_detail(request, slug):
             "new_comment": new_comment,
             "comment_form": new_comment_form,
             "post_form": post_form,
+            "attachment": attachment
         },
     )
 
@@ -108,10 +109,10 @@ def post_detail(request, slug):
 def edit_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
     user_authenticated = request.user.is_authenticated
-    username = request.user.username
+    username = request.user.username 
 
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES ,instance=post)
         if form.is_valid():
             form.save()
             return redirect('post_detail', slug=slug)
@@ -125,14 +126,14 @@ def edit_post(request, slug):
             'form': form, 
             'post': post,
             'user_authenticated': user_authenticated,
-            'username':username
+            'username':username, 
         }
     )
 
 def create_post(request):
     user_authenticated = request.user.is_authenticated
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.slug = Post.create_unique_slug(post)

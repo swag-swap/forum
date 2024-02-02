@@ -22,7 +22,7 @@ class PostForm(forms.ModelForm):
     content = RichTextField(config_name='awesome_ckeditor')
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content','attachment']
 
 class SearchForm(forms.Form):
     query = forms.CharField(label='Search')
