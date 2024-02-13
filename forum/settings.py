@@ -94,12 +94,12 @@ DATABASES = {
 }
 # else:
 #     print("Postgres URL not found, using sqlite instead")
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
+# }
  
 
 AUTH_USER_MODEL = 'app.CustomUser'
@@ -144,17 +144,18 @@ import os
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR/'assets'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# CKEDITOR_UPLOAD_PATH = "uploads/"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = "uploads/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': 'full',
-#         'height': 300,
-#         'width': 800,
-#     },
-# }
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'extraPlugins': 'custom',
+    },
+}
 
 
 

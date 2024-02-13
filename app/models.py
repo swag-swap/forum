@@ -22,6 +22,7 @@ class Post(models.Model):
     )
     updated_on = models.DateTimeField(auto_now=True)
     content = RichTextField()
+    attachment = models.FileField(upload_to='post_attachments/', null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)  
 
     class Meta:
