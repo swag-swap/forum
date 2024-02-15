@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserCreationForm, CommentForm, PostForm, SearchForm
 from .models import Post, Comment
-from django.db.models import Q
-
+from django.db.models import Q 
  
 def homePage(request):
     user_authenticated = request.user.is_authenticated
@@ -35,7 +35,6 @@ def homePage(request):
 
     return render(request, 'home.html', {'user_authenticated': user_authenticated, 'posts': posts, 'form': form, 'query': query})
 
-
 def register_user(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -49,7 +48,6 @@ def register_user(request):
         form = CustomUserCreationForm()
 
     return render(request, 'register.html', {'form': form})
-
 
 def login_user(request):
     if request.method == 'POST':
@@ -65,7 +63,6 @@ def login_user(request):
             return render(request, 'login.html', {'error_message': 'Invalid username or password'})
 
     return render(request, 'login.html')    
-
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -105,14 +102,13 @@ def post_detail(request, slug):
         },
     )
 
-
 def edit_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
     user_authenticated = request.user.is_authenticated
     username = request.user.username 
-
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES ,instance=post)
+        # print(form)
         if form.is_valid():
             form.save()
             return redirect('post_detail', slug=slug)
@@ -145,7 +141,6 @@ def create_post(request):
 
     return render(request, 'create_post.html', {'form': form, 'user_authenticated': user_authenticated})
 
-
 def post_list(request):
     form = SearchForm(request.GET)
     query = request.GET.get('query', '')
@@ -160,7 +155,30 @@ def post_list(request):
 
     return render(request, 'post_list.html', {'posts': posts, 'form': form, 'query': query})
 
-
 def my_logout(request):
     auth_logout(request)
     return redirect('/')
+
+def delete_post(request, slug): 
+    if request.method == 'DELETE':
+        post = get_object_or_404(Post, slug=slug)
+        post.delete()
+        # print('Post Deleted')
+        return JsonResponse({'message': 'Post deleted successfully'}, status=204)
+    else:
+        # print('Not allowed')
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    
+def search_posts(request, slug):
+    if request.method == 'GET':
+        filtered_posts = Post.objects.filter(
+            Q(title__icontains=slug) | Q(content__icontains=slug)
+        ).values('slug', 'title', 'updated_on')
+ 
+        if filtered_posts.count() > 6:
+            filtered_posts = filtered_posts[:6]
+ 
+        serialized_posts = list(filtered_posts)
+        return JsonResponse(serialized_posts, safe=False, status=200)
+    else:
+        return JsonResponse({'error': 'Not searched'}, status=405)
