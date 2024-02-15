@@ -1,27 +1,97 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    
-<div class="container">
+{% extends 'base.html' %} {% block content %}
+<div id="container" class="container flex">
     <div class="row">
-        <div class="col-md-12 card mb-4  mt-3 left  top">
-            <div class="card-body">
-                    {% if user_authenticated and post.author == request.user %} 
+        <div class="col-md-12">
+            <div class="card mb-4 mt-3 left top">
+                <div class="card-body">
+                    {% if user_authenticated and post.author == request.user %}
                     <h1>Edit Post</h1>
                     <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
+                        {% csrf_token %} {{ form.as_p }}
                         <button type="submit">Save changes</button>
+                        <button
+                            type="button"
+                            id="delete"
+                            onclick="deletePost('{{ post.slug }}')"
+                        >
+                            Delete Post
+                        </button>
                     </form>
-                    {# Include CKEditor assets #}
-                    {{ form.media }}
-                    {% else %}
+                    {# Include CKEditor assets #} {{ form.media }} {% else %}
                     <h2>You are not the author of the Post</h2>
-                    <p class="card-title">Please <a href="{% url 'login_user' %}">Login</a> with correct user</p>
+                    <p class="card-title">
+                        Please <a href="{% url 'login_user' %}">Login</a> with
+                        correct user
+                    </p>
                     {% endif %}
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div id="card" class="card-body right top"> 
+            </div>
+        </div>
     </div>
+</div>
+<script>
+    let titleInput = document.getElementById("id_title");
+
+    titleInput.addEventListener("blur", async function (event) {
+        let title = titleInput.value;
+        try {
+            const response = await fetch(`/searched-post/${title}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            // console.log(data);
+            const card = document.getElementById('card');
+            data.map((item) => { 
+                var itemDiv = document.createElement('a');
+                itemDiv.href = `/post/${item.slug}`;
+                var titleElement = document.createElement('h2');
+                titleElement.textContent = item.title;
+                itemDiv.appendChild(titleElement); 
+                var updatedOnElement = document.createElement('p');
+                updatedOnElement.style.borderBottom = '1px solid #333';
+                updatedOnElement.textContent = 'Updated on: ' + item.updated_on;
+                itemDiv.appendChild(updatedOnElement);
+ 
+                card.appendChild(itemDiv);
+            }); 
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+
+    async function deletePost(slug) {
+        if (confirm("Are you sure you want to delete this post?")) {
+            await fetch(`/delete-post/${slug}/`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        window.location.href = "/";
+                    } else {
+                        console.error(
+                            "Error deleting post:",
+                            response.statusText
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error deleting post:", error);
+                });
+        }
+    }
+</script>
 
 {% endblock %}
