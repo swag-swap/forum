@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 import dj_database_url
 # if not DEBUG:
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('RENDER_EXTERNAL_URL')) 
+    'default': dj_database_url.config(default='postgres://forumdb_ky27_user:epAZ39NpyHuXB83BJgOM1ey0ZPbotQn2@dpg-cn710cuct0pc73fhgdmg-a.oregon-postgres.render.com/forumdb_ky27') 
 }
 # else:
 #     print("Postgres URL not found, using sqlite instead")
