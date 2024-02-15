@@ -49,9 +49,10 @@
                 throw new Error("Network response was not ok");
             }
             const data = await response.json();
-            // console.log(data);
+ 
             const card = document.getElementById('card');
-            data.map((item) => { 
+            card.innerHTML = "";       
+            await data.map((item) => { 
                 var itemDiv = document.createElement('a');
                 itemDiv.href = `/post/${item.slug}`;
                 var titleElement = document.createElement('h2');

@@ -24,4 +24,42 @@
         </div>
     </div>
 
+    <script>
+        let titleInput = document.getElementById("id_title");
+    
+        titleInput.addEventListener("blur", async function (event) {
+            let title = titleInput.value;
+            try {
+                const response = await fetch(`/searched-post/${title}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+     
+                const card = document.getElementById('card');
+                card.innerHTML = "";       
+                await data.map((item) => { 
+                    var itemDiv = document.createElement('a');
+                    itemDiv.href = `/post/${item.slug}`;
+                    var titleElement = document.createElement('h2');
+                    titleElement.textContent = item.title;
+                    itemDiv.appendChild(titleElement); 
+                    var updatedOnElement = document.createElement('p');
+                    updatedOnElement.style.borderBottom = '1px solid #333';
+                    updatedOnElement.textContent = 'Updated on: ' + item.updated_on;
+                    itemDiv.appendChild(updatedOnElement);
+     
+                    card.appendChild(itemDiv);
+                }); 
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    </script>
+
 {% endblock %}
