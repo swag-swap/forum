@@ -1,9 +1,8 @@
 {% extends 'base.html' %} {% block content %}
-<div id="container" class="container flex">
+<div class="container" style="display: flex; flex-direction: row; text-decoration: none;">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card mb-4 mt-3 left top">
-                <div class="card-body">
+        <div class="col-md-12 card mb-4  mt-3 left  top" style="align-items: left;">
+            <div class="card-body">
                     {% if user_authenticated and post.author == request.user %}
                     <h1>Edit Post</h1>
                     <form method="post" enctype="multipart/form-data">
@@ -27,12 +26,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="display: none;">
             <div id="card" class="card-body right top"> 
             </div>
         </div>
     </div>
-</div>
 <script>
     let titleInput = document.getElementById("id_title");
 
@@ -51,6 +49,12 @@
             const data = await response.json();
  
             const card = document.getElementById('card');
+            if(data.length != 0){
+                card.parentElement.style.display = 'block';
+            }
+            else {
+                card.parentElement.style.display = 'none';
+            }
             card.innerHTML = "";       
             await data.map((item) => { 
                 var itemDiv = document.createElement('a');
@@ -62,7 +66,9 @@
                 updatedOnElement.style.borderBottom = '1px solid #333';
                 updatedOnElement.textContent = 'Updated on: ' + item.updated_on;
                 itemDiv.appendChild(updatedOnElement);
- 
+                updatedOnElement.style.color = 'black';
+                titleElement.style.color = 'black';
+                itemDiv.style.textDecoration = 'none';
                 card.appendChild(itemDiv);
             }); 
         } catch (error) {
