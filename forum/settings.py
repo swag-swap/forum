@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.environ.get('DEBUG', 'True')=="True"
-DEBUG ="False"
+DEBUG =True
 ALLOWED_HOSTS = ['localhost:8000','forum-qomi.onrender.com','127.0.0.1']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -68,18 +68,24 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 # Database 
 import dj_database_url
 # if not DEBUG:
-DATABASES = {
-    'default': dj_database_url.config(default='postgres://forumdb_ky27_user:epAZ39NpyHuXB83BJgOM1ey0ZPbotQn2@dpg-cn710cuct0pc73fhgdmg-a.oregon-postgres.render.com/forumdb_ky27') 
-}
+#     DATABASES = {
+#         'default': dj_database_url.config(default='postgres://forumdb_ky27_user:epAZ39NpyHuXB83BJgOM1ey0ZPbotQn2@dpg-cn710cuct0pc73fhgdmg-a.oregon-postgres.render.com/forumdb_ky27') 
+#     }
 # else:
 #     print("Postgres URL not found, using sqlite instead")
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
 #     }
-# }
  
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 AUTH_USER_MODEL = 'app.CustomUser'
 
