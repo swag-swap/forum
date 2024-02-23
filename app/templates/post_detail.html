@@ -15,7 +15,15 @@
                     <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
                     <p class="card-text ">{{ post.content | safe }}</p> 
                     {% if post.attachment %}
-                        <p>Attachment: <a href="{{ post.attachment.url }}" target="_blank">{{ post.attachment.name }}</a></p>
+                        {% if post.attachment.url %}
+                            {% if post.attachment.url|lower|slice:"-4:" == ".pdf" %}
+                                <object data="{{ post.attachment.url }}" type="application/pdf" width="100%" height="600px">
+                                    <p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="{{ post.attachment.url }}">click here to download the PDF file.</a></p>
+                                </object>
+                            {% else %}
+                                <p>Attachment: <a href="{{ post.attachment.url }}" target="_blank">{{ post.attachment.name }}</a></p>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

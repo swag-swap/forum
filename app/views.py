@@ -73,6 +73,8 @@ def post_detail(request, slug):
     user_authenticated = request.user.is_authenticated
     username = request.user.username
     attachment = request.FILES.get('attachment')
+    print(attachment)
+    extension = attachment;
 
     if request.method == "POST": 
         comment_form = CommentForm(data=request.POST)
@@ -91,14 +93,14 @@ def post_detail(request, slug):
         {
             "username": username,
             'user_authenticated': user_authenticated,
-            "slug": slug,
-            "user_authenticated": user_authenticated,
+            "slug": slug, 
             "post": post,
             "comments": comments,
             "new_comment": new_comment,
             "comment_form": new_comment_form,
             "post_form": post_form,
-            "attachment": attachment
+            "attachment": attachment,
+            "extension": extension,
         },
     )
 
