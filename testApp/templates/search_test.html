@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Test</title>
+</head>
+<body>
+    <h1>Search Test</h1>
+    <form method="get">
+        <input type="text" name="q" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+    {% if tests %}
+        <ul>
+            {% for test in tests %}
+                <li>{{ test.title }}</li>
+                <!-- Display other details of the test as needed -->
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tests found for "{{ query }}".</p>
+    {% endif %}
+</body>
+</html>

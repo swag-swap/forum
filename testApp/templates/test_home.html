@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Tests</h1>
+    <ul>
+        {% for test in tests %}
+            <li>
+                <a href="{% url 'test_detail' slug=test.slug %}">{{ test.title }}</a> 
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

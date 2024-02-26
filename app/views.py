@@ -74,7 +74,7 @@ def post_detail(request, slug):
     username = request.user.username
     attachment = request.FILES.get('attachment')
     print(attachment)
-    extension = attachment;
+    extension = attachment.url.split('.')[-1];
 
     if request.method == "POST": 
         comment_form = CommentForm(data=request.POST)
