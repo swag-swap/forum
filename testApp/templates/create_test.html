@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Test</title>
+    </head>
+    <body>
+        <h1>Create Test</h1>
+        <form method="post">
+            {% csrf_token %}
+             <!-- {{ form.as_p }} -->
+
+            <div>
+                <label for="id_title">Title:</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ request.test.title}}"
+                    maxlength="200"
+                    required
+                    id="id_title"
+                />
+            </div>
+
+            <div>
+                <label for="id_start_time">Start time:</label>
+
+                <ul class="errorlist">
+                    <li>Enter a valid date/time.</li>
+                </ul>
+                <input
+                    type="datetime-local"
+                    name="start_time"
+                    value="{{ request.test.start_time}}"
+                    required
+                    aria-invalid="true"
+                    id="id_start_time"
+                />
+            </div>
+
+            <div>
+                <label for="id_end_time">End time:</label>
+
+                <ul class="errorlist">
+                    <li>Enter a valid date/time.</li>
+                </ul>
+                <input
+                    type="datetime-local"
+                    name="end_time"
+                    value={{ request.post.end_time}}
+                    required
+                    aria-invalid="true"
+                    id="id_end_time"
+                />
+            </div>
+
+            <div>
+                <label for="id_content">Content:</label>
+
+                <textarea
+                    name="content"
+                    cols="40"
+                    rows="10"
+                    required
+                    id="id_content"
+                >
+{{ request.test.content}}
+</textarea
+                >
+            </div>
+
+            <button type="submit">Create Test</button>
+        </form>
+    </body>
+</html>
