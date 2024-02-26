@@ -13,7 +13,7 @@ SECRET_KEY = env('SECRET_KEY')
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
  
 
-DEBUG = env('TEMP')
+DEBUG = False
 print(BASE_DIR,DEBUG)
 ALLOWED_HOSTS = ['localhost:8000','forum-qomi.onrender.com','127.0.0.1']
 RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME')
