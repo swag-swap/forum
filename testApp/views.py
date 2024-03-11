@@ -59,15 +59,12 @@ def test_manage_detail(request, slug=None):
     context['formset'] = formset
     return render(request, 'manage.html', context)
 
-# def product_detail_view(request, handle=None):
-#     obj = get_object_or_404(Product, handle=handle)
-#     attachments = ProductAttachment.objects.filter(product=obj)
-#     # attachments = obj.productattachment_set.all()
-#     is_owner = False
-#     if request.user.is_authenticated:
-#         is_owner = request.user.purchase_set.all().filter(product=obj, completed=True).exists()
-#     context = {"object": obj, "is_owner": is_owner, "attachments": attachments}
-#     return render(request, 'products/detail.html', context)
+def test_detail(request, slug=None):
+    obj = get_object_or_404(Test, slug=slug) 
+    if request.user.is_authenticated:
+        temp = True # to do
+    context = {"object": obj}
+    return render(request, './test_detail.html', context)
 
 # def product_attachment_download_view(request, handle=None, pk=None):
 #     attachment = get_object_or_404(ProductAttachment, product__handle=handle, pk=pk)
