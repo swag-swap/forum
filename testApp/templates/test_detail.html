@@ -5,10 +5,21 @@
     <title>Test Detail</title>
 </head>
 <body>
-    <h1>Test Detail</h1>
-    <h2>{{ test.title }}</h2>
-    <p>Author: {{ test.author }}</p>
-    <p>Updated On: {{ test.updated_on }}</p>
-    <p>Content: {{ test.content }}</p> 
+    <h1>{{ test.title }}</h1>
+    <p>Start Time: {{ test.start_time }}</p>
+    <p>End Time: {{ test.end_time }}</p>
+    <p>Content: {{ test.content }}</p>
+
+    <h2>Questions</h2>
+    <ul>
+        {% for question in test.questions.all %}
+            <li>{{ question.text }}</li>
+            <ul>
+                {% for option in question.options.all %}
+                    <li>{{ option.text }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
 </body>
 </html>

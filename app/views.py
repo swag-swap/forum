@@ -38,6 +38,7 @@ def homePage(request):
 def register_user(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             user = form.save()
             login(request, user)

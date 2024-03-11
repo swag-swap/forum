@@ -2,9 +2,7 @@ import os
 from pathlib import Path
 import environ
 # Initialise environment variables
-env = environ.Env(
-    DEBUG=(bool, True)
-)
+env = environ.Env()
  
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -13,12 +11,14 @@ SECRET_KEY = env('SECRET_KEY')
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
  
 
-DEBUG = env('TEMP')
+DEBUG = env.bool('DEBUG', default=True)
 print(BASE_DIR,DEBUG)
 ALLOWED_HOSTS = ['localhost:8000','forum-qomi.onrender.com','127.0.0.1']
 RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME) 
+
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -84,18 +84,18 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 
 # Database 
 import dj_database_url
-# if not DEBUG:
-# DATABASES = {
-#     'default': dj_database_url.config(default=env.db()) 
-# }
-# else:
-#     print("Postgres URL not found, using sqlite instead")
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if not DEBUG:
+    DATABASES = {
+        'default': dj_database_url.config(default=env.db()) 
     }
-}
+else:
+    print("Postgres URL not found, using sqlite instead")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
  
 
 AUTH_USER_MODEL = 'app.CustomUser'
