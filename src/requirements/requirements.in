@@ -1,0 +1,8 @@
+Django>4.1,<4.2 
+psycopg2-binary
+dj_database_url
+python-decouple
+django-ckeditor-5
+pillow
+cloudinary
+django-cloudinary-storage

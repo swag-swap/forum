@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+<div class="container" style="display: flex; flex-direction: row;">
+    <div class="row">
+        <div class="col-md-12 card mb-4  mt-3 left  top" style="align-items: left;">
+            <div class="card-body">
+                    {% if user_authenticated  %} 
+                    <h1>Create Post</h1>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        {{ form.media }}
+                        <button type="submit">Post</button>
+                    </form enctype="multipart/form-data"> 
+                    {% else %}
+                    <h2>You are not Logged in!</h2>
+                    <p class="card-title">Please <a href="{% url 'login_user' %}">Login</a> with correct user</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" style="display: none;">
+            <div id="card" class="card-body right top"> 
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let titleInput = document.getElementById("id_title");
+    
+        titleInput.addEventListener("blur", async function (event) {
+            let title = titleInput.value;
+            try {
+                const response = await fetch(`/searched-post/${title}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                const card = document.getElementById('card');
+                if(data.length != 0){
+                    card.parentElement.style.display = 'block';
+                }
+                else {
+                    card.parentElement.style.display = 'none';
+                }
+     
+                card.innerHTML = "";       
+                await data.map((item) => { 
+                    var itemDiv = document.createElement('a');
+                    itemDiv.href = `/post/${item.slug}`;
+                    var titleElement = document.createElement('h2');
+                    titleElement.textContent = item.title;
+                    itemDiv.appendChild(titleElement); 
+                    var updatedOnElement = document.createElement('p');
+                    updatedOnElement.style.borderBottom = '1px solid #333';
+                    updatedOnElement.textContent = 'Updated on: ' + item.updated_on;
+                    itemDiv.appendChild(updatedOnElement);
+                    updatedOnElement.style.color = 'black';
+                    titleElement.style.color = 'black';
+                    itemDiv.style.textDecoration = 'none';
+                    card.appendChild(itemDiv);
+                }); 
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    </script>
+
+{% endblock %}

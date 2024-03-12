@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% block content %} 
+
+    
+
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-md-12 card mb-4  mt-3 left  top">
+                <div class="card-body">
+                    <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
+                    {% if user_authenticated and post.author == request.user %} 
+                    <a href="{% url 'edit_post' slug=post.slug  %}"  class="btn ">Edit &rarr;</a>
+                    {% endif %}
+                    <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
+                    <p class="card-text ">{{ post.content | safe }}</p> 
+                    {% if post.attachment %}
+                        {% if post.attachment.url %}
+                            {% if post.attachment.url|lower|slice:"-4:" == ".pdf" %}
+                                <object data="{{ post.attachment.url }}" type="application/pdf" width="100%" height="600px">
+                                    <p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="{{ post.attachment.url }}">click here to download the PDF file.</a></p>
+                                </object>
+                            {% else %}
+                                <p>Attachment: <a href="{{ post.attachment.url }}" target="_blank">{{ post.attachment.name }}</a></p>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-12 card mb-4  mt-3 ">
+                <div class="card-body">
+                    {% if user_authenticated %} 
+                        <h3>Leave a comment</h3>
+                        <form method="post" style="margin-top: 1.3em;">
+                            {% csrf_token %}
+                                <textarea name="body" placeholder="Enter comment" style="width: 100%; border: none;" cols="align-items-center" id="id_body"></textarea>
+                            <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                        </form> 
+                    {% else %}
+                        <button  type="submit" name="edit_comment" value="{{ comment.id }}" ><a href="{% url 'login_user' %}">Login</a></button> to add comment
+                        
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+            <div class="col-md-12 card mb-4  mt-3 ">
+                <div class="card-body">
+                    <!-- comments -->
+                    {% with comments.count as total_comments %}
+                        <h2>{{ total_comments }} comments</h2>
+
+                        <p>
+                    {% endwith %} {% for comment in comments %}
+                        </p>
+
+                        <div class="comments" style="padding: 10px;">
+                            <p class="font-weight-bold">
+                                {{ comment.author }}
+                                <span class=" text-muted font-weight-light">
+                                    {{ comment.created_on }}
+                                </span>
+                            </p>
+                            {{ comment.body | linebreaks }}
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
