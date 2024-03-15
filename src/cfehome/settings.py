@@ -155,6 +155,6 @@ from .ckeditor import *
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
-# CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-CKEDITOR_5_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# CKEDITOR_5_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 CKEDITOR_5_FILE_STORAGE_PATH = 'ckeditor/'

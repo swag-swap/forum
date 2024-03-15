@@ -16,23 +16,20 @@ class CommentForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = input_css_class
 
 
-class PostForm(forms.ModelForm):
-    # content = RichTextField(config_name='awesome_ckeditor')
+class PostForm(forms.ModelForm): 
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields["text"].required = False
+
     class Meta:
         model = Post
-        fields = ['title', 'content','attachment']
+        fields = ['title', 'text','attachment']
         widgets = {
             "text": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"}, config_name="comment"
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
             )
         } 
      
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label='Search')
-
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs) 
-        for field in self.fields:
-            self.fields[field].widget.attrs['class'] = input_css_class
+    query = forms.CharField(label='Search') 

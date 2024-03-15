@@ -6,13 +6,13 @@
         <div class="row">
             
             <div class="col-md-12 card mb-4  mt-3 left  top">
-                <div class="card-body">
+                <div class="card-body ">
                     <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
                     {% if user_authenticated and post.author == request.user %} 
                     <a href="{% url 'edit_post' slug=post.slug  %}"  class="btn ">Edit &rarr;</a>
                     {% endif %}
                     <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
-                    <p class="card-text ">{{ post.content | safe }}</p> 
+                    <p class="card-text ck-content">{{ post.text | safe }}</p> 
                     {% if post.attachment %}
                         {% if post.attachment.url %}
                             {% if post.attachment.url|lower|slice:"-4:" == ".pdf" %}

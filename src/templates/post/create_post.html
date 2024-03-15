@@ -7,16 +7,23 @@
         <div class="col-md-12 card mb-4  mt-3 left  top" style="align-items: left;">
             <div class="card-body">
                     {% if user_authenticated  %} 
+                    {# Include CKEditor assets #}{{ form.media }} 
                     <h1>Create Post</h1>
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data" >
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        {{ form.media }}
-                        <button type="submit">Post</button>
-                    </form enctype="multipart/form-data"> 
+                        <!-- {{ form.as_p }}  -->
+                        {% for field in form %}
+                        <div class="form-group">
+                            <div><label for="{{ field.id_for_label }}" class="text-dark">{{ field.label }}: </label></div>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+
+                        <button type="submit" class="btn-submit mt-2">Post</button>
+                    </form>
                     {% else %}
                     <h2>You are not Logged in!</h2>
-                    <p class="card-title">Please <a href="{% url 'login_user' %}">Login</a> with correct user</p>
+                    <p class="card-title">Please <a class="btn-submit" href="{% url 'login_user' %}">Login</a> with correct user</p>
                     {% endif %}
                 </div>
             </div>
@@ -33,7 +40,7 @@
         titleInput.addEventListener("blur", async function (event) {
             let title = titleInput.value;
             try {
-                const response = await fetch(`/searched-post/${title}`, {
+                const response = await fetch(`/post/searched-post/${title}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

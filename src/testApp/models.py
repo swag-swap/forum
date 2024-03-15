@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 import random
 import pathlib
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Test(models.Model):
@@ -15,7 +16,7 @@ class Test(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     duration = models.PositiveIntegerField(default=0)
-    content = models.TextField()   
+    content = CKEditor5Field('Text', config_name='extends')
 
     def __str__(self):
         return self.title 
@@ -45,7 +46,7 @@ class Question(models.Model):
         ('THEORY', 'Theory Question'),
     )
     question_type = models.CharField(max_length=10, choices=QUESTION_TYPE_CHOICES)
-    text = models.TextField()
+    text = CKEditor5Field('Text', config_name='extends')
     marks = models.IntegerField() 
     
     def __str__(self):
@@ -56,15 +57,14 @@ class Question(models.Model):
         return self.name or pathlib.Path(self.file.name).name
 
     def get_download_url(self):
-        url_kwargs = {
-            "handle": self.test.slug,
+        url_kwargs = { 
             "pk": self.pk,
         }
         return reverse("manage_test", kwargs=url_kwargs)
 
 class Option(models.Model):
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
-    text = models.CharField(max_length=200) 
+    text = CKEditor5Field('Text', config_name='extends')
     is_correct = models.BooleanField()
  
     def get_download_url(self):
@@ -75,20 +75,7 @@ class Option(models.Model):
 
     def __str__(self):
         return self.text
-
-class QuestionImage(models.Model): 
-    question = models.ForeignKey('Question', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='question_images/')
-
-    def __str__(self):
-        return self.image.name
-
-class OptionImage(models.Model): 
-    option = models.ForeignKey('Option', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='option_images/')
-
-    def __str__(self):
-        return self.image.name
+  
 
 class TestResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

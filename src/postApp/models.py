@@ -21,7 +21,7 @@ class Post(models.Model):
         User, on_delete=models.CASCADE, related_name="post_author"
     )
     updated_on = models.DateTimeField(auto_now=True)
-    content = CKEditor5Field('Text', config_name='extends')
+    text = CKEditor5Field('Text', config_name='extends')
     attachment = models.FileField(upload_to='post_attachments/', null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)  
 

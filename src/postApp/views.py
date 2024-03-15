@@ -25,7 +25,7 @@ def homePage(request):
 
     if query:
         posts = Post.objects.filter(
-            Q(title__icontains=query) | Q(content__icontains=query)
+            Q(title__icontains=query) | Q(text__icontains=query)
         ).distinct()
 
     return render(request, 'post/home.html', {'user_authenticated': user_authenticated, 'posts': posts, 'form': form, 'query': query})
@@ -93,8 +93,10 @@ def edit_post(request, slug):
 
 def create_post(request):
     user_authenticated = request.user.is_authenticated
+    print("hi")
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
+        print("hello")  
         if form.is_valid():
             post = form.save(commit=False)
             post.slug = Post.create_unique_slug(post)
@@ -102,7 +104,7 @@ def create_post(request):
             post.save()
             return redirect('post_detail', slug=post.slug)   
     else:
-        form = PostForm()
+        form = PostForm(request.POST, request.FILES)
 
     return render(request, 'post/create_post.html', {'form': form, 'user_authenticated': user_authenticated})
 
@@ -133,7 +135,7 @@ def delete_post(request, slug):
 def search_posts(request, slug):
     if request.method == 'GET':
         filtered_posts = Post.objects.filter(
-            Q(title__icontains=slug) | Q(content__icontains=slug)
+            Q(title__icontains=slug) | Q(text__icontains=slug)
         ).values('slug', 'title', 'updated_on')
  
         if filtered_posts.count() > 6:

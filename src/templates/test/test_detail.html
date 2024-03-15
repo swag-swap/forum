@@ -1,17 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test Detail</title>
-</head>
-<body>
-    <h1>{{ object.title }}</h1>
-    <h2>{{ object.author }}</h2>
-    <p>{{ object.updated_on }}</p>
-    <p>{{ object.content }}</p>
-    {% for question in questions %}
-        <h3>{{ question.text }}</h3>
-        <h5>{{ question.question_type }}</h5>
+{% extends "base.html" %} 
+{% block content %} 
+
+<h1>{{ object.title }}</h1>
+<p>{{ object.description }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {{ field }}
+        </div>
     {% endfor %}
-</body>
-</html>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Questions:</h2>
+<ul>
+    {% for question in questions %}
+        <li>{{ question.text }}</li>
+        <ul>
+            {% for option in options %}
+                {% if option.question == question %}
+                    <li>{{ option.text }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+{% endblock %} 

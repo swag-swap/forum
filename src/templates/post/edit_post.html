@@ -7,10 +7,11 @@
                     <h1>Edit Post</h1>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %} {{ form.as_p }}
-                        <button type="submit">Save changes</button>
+                        <button class="btn-submit" type="submit">Save changes</button>
                         <button
                             type="button"
                             id="delete"
+                            class="btn-submit"
                             onclick="deletePost('{{ post.slug }}')"
                         >
                             Delete Post
@@ -19,7 +20,7 @@
                     {# Include CKEditor assets #} {{ form.media }} {% else %}
                     <h2>You are not the author of the Post</h2>
                     <p class="card-title">
-                        Please <a href="{% url 'login_user' %}">Login</a> with
+                        Please <a class="btn-submit" href="{% url 'login_user' %}">Login</a> with
                         correct user
                     </p>
                     {% endif %}
@@ -37,7 +38,7 @@
     titleInput.addEventListener("blur", async function (event) {
         let title = titleInput.value;
         try {
-            const response = await fetch(`/searched-post/${title}`, {
+            const response = await fetch(`/post/searched-post/${title}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +79,7 @@
 
     async function deletePost(slug) {
         if (confirm("Are you sure you want to delete this post?")) {
-            await fetch(`/delete-post/${slug}/`, {
+            await fetch(`/post/delete-post/${slug}/`, {
                 method: "DELETE",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}",

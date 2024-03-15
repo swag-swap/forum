@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Test</title>
-</head>
-<body>
+{% extends "base.html" %} 
+{% block content %}
     <h1>Delete Test</h1>
     <p>Are you sure you want to delete "{{ test.title }}"?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Delete</button>
-    </form>
-</body>
-</html>
+    </form> 
+
+{% endblock %}
+    
