@@ -75,7 +75,7 @@ class Option(models.Model):
 
     def __str__(self):
         return self.text
-  
+   
 
 class TestResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

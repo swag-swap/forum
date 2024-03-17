@@ -16,16 +16,18 @@
 </form>
 
 <h2>Questions:</h2>
-<ul>
+<ul class="mt-5">
     {% for question in questions %}
-        <li>{{ question.text }}</li>
-        <ul>
+    <p>New question is:</p>
+    {# Include CKEditor assets #} {{ form.media }} 
+        {{ question.text | safe}}
+        <!-- <ul>
             {% for option in options %}
                 {% if option.question == question %}
                     <li>{{ option.text }}</li>
                 {% endif %}
             {% endfor %}
-        </ul>
+        </ul> -->
     {% endfor %}
 </ul>
 {% endblock %} 

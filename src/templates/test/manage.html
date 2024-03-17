@@ -8,6 +8,7 @@
     {{ form.as_p }}
     </div>
 
+
     <div>
         {{ formset.management_form }}
         <div class="pb-3 border-b space-y-3" id="attachments">
@@ -24,13 +25,134 @@
     <button type="submit" class="btn-submit mt-2">Save</button>
 </form>
 
+<button id="add-questions" onclick=getQuestions() class="btn-submit mt-2">Update questions</button>
 
+<div id="append-question">
+
+</div>
+<button id="add-question-button" class="btn-submit mt-2">Add New Question</button>
+
+
+<div id="blank-question">
+    <p>
+        <label for="0-question_type">Question type:</label>
+        <select name="0-question_type" id="0-question_type">
+            <option value="">---------</option>
+
+            <option value="MCQ" selected>Multiple Choice Question</option>
+
+            <option value="MSQ">Multiple Select Question</option>
+
+            <option value="THEORY">Theory Question</option>
+
+        </select>
+
+
+    </p>
+
+
+    <p>
+        <label for="id-0-text">Text:</label>
+    <div class="ck-editor-container">
+        <textarea name="id-0-text" class="django_ckeditor_5" id="id-0-text"></textarea> 
+
+    </div>
+    <input type="hidden" id="id-0-text_script-ck-editor-5-upload-url"
+        data-upload-url="/ckeditor5/image_upload/" data-csrf_cookie_name="csrftoken">
+
+    <span id="id-0-text_script-span">
+        <script id="id-0-text_script"
+            type="application/json">{"toolbar": ["heading", "codeBlock", "|", "outdent", "indent", "|", "bold", "italic", "link", "underline", "strikethrough", "code", "subscript", "superscript", "highlight", "|", "bulletedList", "numberedList", "todoList", "|", "blockQuote", "insertImage", "|", "fontSize", "fontFamily", "fontColor", "fontBackgroundColor", "mediaEmbed", "removeFormat", "insertTable", "sourceEditing"], "language": "en", "blockToolbar": ["paragraph", "heading1", "heading2", "heading3", "|", "bulletedList", "numberedList", "|", "blockQuote"], "image": {"toolbar": ["imageTextAlternative", "|", "imageStyle:alignLeft", "imageStyle:alignRight", "imageStyle:alignCenter", "imageStyle:side", "|", "toggleImageCaption", "|"], "styles": ["full", "side", "alignLeft", "alignRight", "alignCenter"], "uploadUrl": "/ckeditor/"}, "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties"], "tableProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}, "tableCellProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}}, "heading": {"options": [{"model": "paragraph", "title": "Paragraph", "class": "ck-heading_paragraph"}, {"model": "heading1", "view": "h1", "title": "Heading 1", "class": "ck-heading_heading1"}, {"model": "heading2", "view": "h2", "title": "Heading 2", "class": "ck-heading_heading2"}, {"model": "heading3", "view": "h3", "title": "Heading 3", "class": "ck-heading_heading3"}]}, "list": {"properties": {"styles": true, "startIndex": true, "reversed": true}}, "htmlSupport": {"allow": [{"name": "/.*/", "attributes": true, "classes": true, "styles": true}]}}</script>
+    </span>
+
+
+    </p>
+
+
+    <p>
+        <label for="0-marks">Marks:</label>
+        <input type="number" name="0-marks" value="34" id="0-marks">
+
+
+    </p>
+
+
+    <p>
+        <label for="0-DELETE">Delete:</label>
+        <input type="checkbox" name="0-DELETE" id="0-DELETE">
+
+
+        <input type="hidden" name="0-id" value="13" id="0-id">
+
+    </p>
+</div>
 
 <div class="hidden" id="blank-form">
     {{ formset.empty_form }}
 </div>
 
-<script>
+<script> 
+    let questionData;
+    async function getQuestions(){
+        const url = window.location.href;
+        const parts = url.split('/');
+        const slug = parts[parts.length - 2];
+        const response = await fetch(`/test/update-test/${slug}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        questionData = await response.json(); 
+        console.log(questionData)
+         
+
+    }
+ 
+    getQuestions()
+
+    // adding new question
+    const addButton = document.getElementById('add-question-button');
+    const blankQuestion = document.getElementById('blank-question');
+    const appendQuestion = document.getElementById('append-question');
+
+    addButton.addEventListener('click', function () {
+        // Clone the blank question element
+        const newQuestion = blankQuestion.cloneNode(true);
+
+        // Get the last question ID
+        const lastQuestionId = document.querySelector('[name^="id-"]:last-of-type').getAttribute('name').split('-')[1];
+
+        // Increment the ID for the new question
+        const newQuestionId = parseInt(lastQuestionId) + 1;
+
+        // Update IDs for cloned elements
+        newQuestion.querySelectorAll('[id], [for], [name]').forEach(element => {
+            const currentId = element.getAttribute('id');
+            const currentFor = element.getAttribute('for');
+            const currentName = element.getAttribute('name');
+
+            if (currentId) {
+                element.setAttribute('id', currentId.replace('0', newQuestionId));
+            }
+            if (currentFor) {
+                element.setAttribute('for', currentFor.replace('0', newQuestionId));
+            }
+            if (currentName) {
+                element.setAttribute('name', currentName.replace('0', newQuestionId));
+            }
+        });
+
+        // Append the new question to the container
+        appendQuestion.appendChild(newQuestion);
+    });
+
+
+
+    // Not to update
    const blankFormEl = document.querySelector("#blank-form")
    const attachmentContainer = document.querySelector("#attachments")
    const addAttachmentBtn = document.querySelector("#add-attachment-btn")

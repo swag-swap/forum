@@ -12,7 +12,7 @@
                     <a href="{% url 'edit_post' slug=post.slug  %}"  class="btn ">Edit &rarr;</a>
                     {% endif %}
                     <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
-                    <p class="card-text ck-content">{{ post.text | safe }}</p> 
+                    <p class="card-text">{{ post.text | safe }}</p> 
                     {% if post.attachment %}
                         {% if post.attachment.url %}
                             {% if post.attachment.url|lower|slice:"-4:" == ".pdf" %}

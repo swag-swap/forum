@@ -25,7 +25,7 @@ def homePage(request):
 
     if query:
         posts = Post.objects.filter(
-            Q(title__icontains=query) | Q(text__icontains=query)
+            Q(title__icontains=query) | Q(__icontains=query)
         ).distinct()
 
     return render(request, 'post/home.html', {'user_authenticated': user_authenticated, 'posts': posts, 'form': form, 'query': query})
