@@ -5,4 +5,5 @@ python-decouple
 django-ckeditor-5
 pillow
 cloudinary
-django-cloudinary-storage
+django-cloudinary-storage 
+gunicorn

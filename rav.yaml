@@ -18,3 +18,9 @@ scripts:
     - mkdir -p src/static/vendor/flowbite/
     - curl -L https://unpkg.com/htmx.org@1.8.2 -o ./src/static/vendor/htmx/htmx.min.js
     - cp ./node_modules/flowbite/dist/flowbite.min.js ./src/static/vendor/flowbite/flowbite.min.js
+  build: sudo docker build -f Dockerfile -t interview-forum .
+  docker_dev: sudo docker run --env-file .env -p 8001:8000 --rm --name interview-forum-dev -it interview-forum
+  docker_prod: docker run --env-file .env-git -p 8002:8000 --rm --name interview-forum-prod -it interview-forum
+  build_push: 
+    - docker build --platform=linux/amd64 -f Dockerfile -t interview-forum .
+    - docker push interview-forum --all-tags

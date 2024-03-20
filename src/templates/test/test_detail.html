@@ -1,33 +1,18 @@
-{% extends "base.html" %} 
-{% block content %} 
-
-<h1>{{ object.title }}</h1>
-<p>{{ object.description }}</p>
-
-<form method="POST">
-    {% csrf_token %}
-    {% for field in form %}
-        <div>
-            {{ field.label_tag }}
-            {{ field }}
-        </div>
-    {% endfor %}
-    <button type="submit">Submit</button>
-</form>
-
-<h2>Questions:</h2>
-<ul class="mt-5">
-    {% for question in questions %}
-    <p>New question is:</p>
-    {# Include CKEditor assets #} {{ form.media }} 
-        {{ question.text | safe}}
-        <!-- <ul>
-            {% for option in options %}
-                {% if option.question == question %}
-                    <li>{{ option.text }}</li>
-                {% endif %}
-            {% endfor %}
-        </ul> -->
-    {% endfor %}
-</ul>
-{% endblock %} 
+{% extends "base.html" %}  
+{% block content %}
+<div class=" mx-auto px-4 py-3">
+    <h1 class="text-3xl font-bold mt-4 mb-4">{{ test.title }}</h1>
+    {% if user_authenticated %} 
+        {% if is_manager %}
+        <a href="{% url 'manage_test' slug=test.slug %}" class="btn-submit mt-5">Edit</a>
+        {% endif %}
+    <a href="{% url 'give_test' slug=test.slug %}" class="btn-submit mt-5">Give the test</a>
+    {% endif %}
+    <p class="text-gray-600 mt-4">Author: {{ test.author.username }}</p> 
+    <p class="text-gray-600 mt-4">Start Time: {{ test.start_time }}</p>
+    <p class="text-gray-600 mt-4">End Time: {{ test.end_time }}</p>
+    <div class="prose max-w-none mt-4">
+        {{ test.content|safe }}
+    </div>
+</div>
+{% endblock %}

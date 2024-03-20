@@ -1,0 +1,127 @@
+{% extends "base.html" %} 
+{% block content %}     
+<!-- <link href="/static/django_ckeditor_5/dist/styles.css" media="all" rel="stylesheet">
+<script src="/static/django_ckeditor_5/dist/bundle.js"></script> -->
+<h1>Questions for Test</h1>
+<div id="question-buttons">
+    {% for question_id in question_ids %}
+    <button id="{{ question_id }}" class="question-button btn-submit" >Question {{ question_id }}</button>
+    {% endfor %}
+</div>
+
+<button id="add-question-button" class="btn-submit mt-2">Add New Question</button>
+<div id="question-form-container">
+    {{ form.media }} 
+</div>
+
+<a href="{% url 'test_detail' slug=test.slug %}" class="btn-submit">Post test</a>
+
+<script>
+    // Adding a new question
+    let id = -1;
+    document.getElementById('add-question-button').addEventListener('click', async function() {
+        const response = await fetch('/test/add-question/{{ test.slug }}/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ test_slug: '{{ test.slug }}' })
+        });
+        const data = await response.json();
+        const newQuestionId = data.question_id;
+        const button = document.createElement('button');
+        button.textContent = 'Question ' + newQuestionId;
+        button.setAttribute('id', newQuestionId); 
+        button.setAttribute('class', "question-button btn-submit");
+        document.getElementById('question-buttons').appendChild(button);
+        addingEventListener(button);
+        button.click()
+    });
+
+    // For each question button click event
+    document.querySelectorAll('.question-button').forEach(button => {
+        addingEventListener(button);
+    });
+
+    function addingEventListener(button){
+        button.addEventListener('click', async function() {
+            // if(id!=-1){
+            //     document.querySelector("#submit-btn").click();
+            // }
+            const questionId = this.getAttribute('id');
+            id = questionId;
+            const response = await fetch(`/test/get-question/${questionId}/`);
+            const html = await response.text();
+            // console.log(html)
+
+            document.getElementById('question-form-container').innerHTML = html;  
+            addingListners();
+        });
+    }
+ 
+
+    let blankFormEl, attachmentContainer, addAttachmentBtn, managementFormInputEl, submitButton;
+
+    // Adding listeners when question button clicked
+    function addingListners(){ 
+        blankFormEl = document.querySelector("#blank-form")
+        attachmentContainer = document.querySelector("#attachments")
+        addAttachmentBtn = document.querySelector("#add-attachment-btn")
+        managementFormInputEl = document.querySelector("#id_form-TOTAL_FORMS")
+        addAttachmentBtn.addEventListener("click", handleAttachmentBtnClick)
+        submitButton = document.querySelector("#submit-btn");
+        submitButton.addEventListener("click", handleSubmitButtonClick);
+    }    
+
+    // For adding the new option
+    function cloneBlankForm(){
+        if (blankFormEl) {
+            const newBlankForm = blankFormEl.cloneNode(true)
+            const totalFormValue = parseInt(managementFormInputEl.value)
+            var formRegex = new RegExp(`__prefix__`, 'g');
+            newBlankForm.innerHTML = newBlankForm.innerHTML.replace(formRegex, totalFormValue)
+            managementFormInputEl.value = totalFormValue + 1
+            newBlankForm.classList.add("attachment-form")
+            newBlankForm.classList.remove("hidden")
+            newBlankForm.removeAttribute("id")
+            // console.log(newBlankForm)
+            return newBlankForm
+        }
+    } 
+    function handleAttachmentBtnClick(e) { 
+        if (e){
+            e.preventDefault();
+        }
+        const newForm = cloneBlankForm();
+        attachmentContainer.appendChild(newForm) ;
+    }
+
+    // For saving the specific question
+    async function handleSubmitButtonClick(e){
+        e.preventDefault(); // Prevent default form submission behavior
+        const form = document.querySelector("#question-form");
+        const formData = new FormData(form);
+        const response = await fetch(`/test/get-question/${id}/`, {
+            method: form.method,
+            body: formData
+        });
+        if (response.ok) { 
+            const currentQuestionButton = document.getElementById(`${id}`) 
+            if (currentQuestionButton) {
+                const nextQuestionButton = currentQuestionButton.nextElementSibling;
+                console.log(nextQuestionButton);
+                if (nextQuestionButton) {
+                    nextQuestionButton.click();
+                } else {
+                    document.getElementById('question-form-container').innerHTML = 'That was last question, now you may submit the test';
+                }
+            }
+        } else { 
+            console.error('Failed to submit the form');
+        }
+
+    } 
+
+</script>
+{% endblock %} 

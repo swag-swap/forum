@@ -10,7 +10,7 @@ from django.db.models import Q
 def homePage(request):
     user_authenticated = request.user.is_authenticated 
     all_posts = Post.objects.all() 
-    paginator = Paginator(all_posts, 5)   
+    paginator = Paginator(all_posts, 6)   
     page = request.GET.get('page', 1) 
     try:
         posts = paginator.page(page)
@@ -93,10 +93,10 @@ def edit_post(request, slug):
 
 def create_post(request):
     user_authenticated = request.user.is_authenticated
-    print("hi")
+    # print("hi")
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        print("hello")  
+        # print("hello")  
         if form.is_valid():
             post = form.save(commit=False)
             post.slug = Post.create_unique_slug(post)

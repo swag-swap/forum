@@ -4,7 +4,7 @@
     <p>Are you sure you want to delete "{{ test.title }}"?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button class="btn-submit mt-5" type="submit">Delete</button>
     </form> 
 
 {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}  
+{% block content %}
+<div class="flex flex-col justify-center align-item-center "> 
+    <h1 class="text-3xl font-bold mt-4 mb-4 text-center">Hey {{ user }}</h1>   
+    {% if score %}
+    <p class="text-gray-600 mt-4 text-center">You get {{ score }} out of {{ total_score }}</p> 
+    {% endif %}
+
+
+<div class="relative overflow-x-auto pt-12">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3 rounded-s-lg">
+                    User name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Score Obtained
+                </th>
+                <th scope="col" class="px-6 py-3 rounded-e-lg">
+                    Total Score
+                </th>
+                <th scope="col" class="px-6 py-3 rounded-e-lg">
+                    Submitted Time
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in all_result %}
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ result.user.username }}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{ result.score_obtained }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ result.total_score }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ result.submitted_time }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+{% endblock %}

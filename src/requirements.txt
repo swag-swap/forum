@@ -27,8 +27,12 @@ django-ckeditor-5==0.2.12
     # via -r src/requirements/requirements.in
 django-cloudinary-storage==0.3.0
     # via -r src/requirements/requirements.in
+gunicorn==21.2.0
+    # via -r src/requirements/requirements.in
 idna==3.6
     # via requests
+packaging==24.0
+    # via gunicorn
 pillow==10.2.0
     # via
     #   -r src/requirements/requirements.in

@@ -13,4 +13,16 @@
     .navbar-component {
         @apply block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent
     }
+    .text-custom-area {
+        @apply block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+    }
+    .custom-heading {
+        @apply max-w-lg text-3xl font-semibold leading-normal text-gray-900 dark:text-white
+    }
+    .custom-text-bold {
+        @apply text-lg font-normal text-black  
+    }
+    .option-text {
+        @apply w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300
+    }
 }

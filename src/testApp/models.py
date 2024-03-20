@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
-import random
-import pathlib
-from django_ckeditor_5.fields import CKEditor5Field
+import random, pathlib, json
+from django_ckeditor_5.fields import CKEditor5Field 
 
 
 class Test(models.Model):
@@ -15,7 +14,7 @@ class Test(models.Model):
     )
     updated_on = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
-    duration = models.PositiveIntegerField(default=0)
+    end_time = models.DateTimeField()
     content = CKEditor5Field('Text', config_name='extends')
 
     def __str__(self):
@@ -25,7 +24,7 @@ class Test(models.Model):
         return reverse("test_detail", kwargs={"slug": str(self.slug)})
     
     def get_manage_url(self):
-        return reverse("manage_test", kwargs={"slug": str(self.slug)})
+        return reverse("update_test_questions", kwargs={"slug": str(self.slug)})
     
     def save(self, *args, **kwargs): 
         if not self.slug:  
@@ -76,20 +75,13 @@ class Option(models.Model):
     def __str__(self):
         return self.text
    
-
 class TestResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    score = models.FloatField()
+    score_obtained = models.FloatField(default = 0) 
+    total_score = models.IntegerField(default = 0)
+    submitted_time = models.DateTimeField(auto_now=True) 
 
-    def __str__(self):
-        return f"{self.user.username} - {self.test.title}"
 
-class Response(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    option = models.ForeignKey(Option, on_delete=models.CASCADE)
-    marks_obtained = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.user.username} - {self.question.text}"
+    class Meta:
+        ordering = ['-submitted_time']

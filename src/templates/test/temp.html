@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+
+<link rel="stylesheet" href="/static/css/output.css" />
+
+
+
+
+    
+    <title>Interview Forum</title>
+
+</head>
+
+<body hx-headers='{"X-CSRFToken": "ir3Cg6LcsncQYn49C5qbsGFpqsBZf9vgpvCqGCBj702qC0aThooKeoV95iq8Rer6"}'>
+
+    
+<nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
+    <div class="container flex flex-wrap items-center justify-between mx-auto">
+      <a href="/" class="flex items-center">
+          <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Interview Forum</span>
+      </a>
+      <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          
+          <li>
+            <a href="/post/create/" class="navbar-component" aria-current="page">Create post</a>
+          </li>
+
+          <li>
+            <a href="/test/create/" class="navbar-component" aria-current="page">Create test</a>
+          </li>
+          
+          <li>
+            <a href="#" class="navbar-component">1</a>
+          </li>
+
+          <li>
+            <a href="/logout/" class="navbar-component">Logout</a>
+          </li>
+
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+
+    <div class="container mx-auto mt-4 min-h-screen">
+       
+        
+
+<form  class='space-y-5' method="POST"  enctype="multipart/form-data">
+     <link href="/static/django_ckeditor_5/dist/styles.css" media="all" rel="stylesheet">
+<script src="/static/django_ckeditor_5/dist/bundle.js"></script> 
+    <input type="hidden" name="csrfmiddlewaretoken" value="ir3Cg6LcsncQYn49C5qbsGFpqsBZf9vgpvCqGCBj702qC0aThooKeoV95iq8Rer6">
+    <div>
+    <p>
+    <label for="id_title">Title:</label>
+    <input type="text" name="title" value="5" maxlength="200" required id="id_title">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_start_time">Start time:</label>
+    <input type="text" name="start_time" value="2024-03-10 01:01:00" required id="id_start_time">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_duration">Duration:</label>
+    <input type="number" name="duration" value="0" min="0" required id="id_duration">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_content">Text:</label>
+    <div class="ck-editor-container">
+<textarea  name="content" class="django_ckeditor_5" id="id_content">
+&lt;p&gt;adf&lt;/p&gt;&lt;p&gt;adkfa&lt;/p&gt;&lt;p&gt;fj&lt;/p&gt;</textarea>
+<span class="word-count" id="id_content_script-word-count"></span>
+
+</div>
+<input type="hidden" id="id_content_script-ck-editor-5-upload-url" data-upload-url="/ckeditor5/image_upload/" data-csrf_cookie_name="csrftoken">
+
+<span id="id_content_script-span"><script id="id_content_script" type="application/json">{"toolbar": ["heading", "codeBlock", "|", "outdent", "indent", "|", "bold", "italic", "link", "underline", "strikethrough", "code", "subscript", "superscript", "highlight", "|", "bulletedList", "numberedList", "todoList", "|", "blockQuote", "insertImage", "|", "fontSize", "fontFamily", "fontColor", "fontBackgroundColor", "mediaEmbed", "removeFormat", "insertTable", "sourceEditing"], "language": "en", "blockToolbar": ["paragraph", "heading1", "heading2", "heading3", "|", "bulletedList", "numberedList", "|", "blockQuote"], "image": {"toolbar": ["imageTextAlternative", "|", "imageStyle:alignLeft", "imageStyle:alignRight", "imageStyle:alignCenter", "imageStyle:side", "|", "toggleImageCaption", "|"], "styles": ["full", "side", "alignLeft", "alignRight", "alignCenter"], "uploadUrl": "/ckeditor/"}, "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties"], "tableProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}, "tableCellProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}}, "heading": {"options": [{"model": "paragraph", "title": "Paragraph", "class": "ck-heading_paragraph"}, {"model": "heading1", "view": "h1", "title": "Heading 1", "class": "ck-heading_heading1"}, {"model": "heading2", "view": "h2", "title": "Heading 2", "class": "ck-heading_heading2"}, {"model": "heading3", "view": "h3", "title": "Heading 3", "class": "ck-heading_heading3"}]}, "list": {"properties": {"styles": true, "startIndex": true, "reversed": true}}, "htmlSupport": {"allow": [{"name": "/.*/", "attributes": true, "classes": true, "styles": true}]}}</script></span>
+    
+    
+      
+    
+  </p>
+    </div>
+
+    <div>
+        <input type="hidden" name="form-TOTAL_FORMS" value="0" id="id_form-TOTAL_FORMS"><input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS"><input type="hidden" name="form-MIN_NUM_FORMS" value="0" id="id_form-MIN_NUM_FORMS"><input type="hidden" name="form-MAX_NUM_FORMS" value="1000" id="id_form-MAX_NUM_FORMS">
+        <div class="pb-3 border-b space-y-3" id="attachments">
+            
+        </div>
+    </div>
+
+    <button class="btn-submit mt-2" id="add-attachment-btn">Add Question</button>
+
+    <button type="submit" class="btn-submit mt-2">Save</button>
+</form>
+
+
+
+<div class="hidden" id="blank-form">
+    <tr>
+    <th><label for="id_form-__prefix__-question_type">Question type:</label></th>
+    <td>
+      
+      <select name="form-__prefix__-question_type" id="id_form-__prefix__-question_type">
+  <option value="" selected>---------</option>
+
+  <option value="MCQ">Multiple Choice Question</option>
+
+  <option value="MSQ">Multiple Select Question</option>
+
+  <option value="THEORY">Theory Question</option>
+
+</select>
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_form-__prefix__-text">Text:</label></th>
+    <td>
+      
+      <div class="ck-editor-container">
+<textarea  name="form-__prefix__-text" class="django_ckeditor_5" id="id_form-__prefix__-text">
+</textarea>
+<span class="word-count" id="id_form-__prefix__-text_script-word-count"></span>
+
+</div>
+<input type="hidden" id="id_form-__prefix__-text_script-ck-editor-5-upload-url" data-upload-url="/ckeditor5/image_upload/" data-csrf_cookie_name="csrftoken">
+
+<span id="id_form-__prefix__-text_script-span"><script id="id_form-__prefix__-text_script" type="application/json">{"toolbar": ["heading", "codeBlock", "|", "outdent", "indent", "|", "bold", "italic", "link", "underline", "strikethrough", "code", "subscript", "superscript", "highlight", "|", "bulletedList", "numberedList", "todoList", "|", "blockQuote", "insertImage", "|", "fontSize", "fontFamily", "fontColor", "fontBackgroundColor", "mediaEmbed", "removeFormat", "insertTable", "sourceEditing"], "language": "en", "blockToolbar": ["paragraph", "heading1", "heading2", "heading3", "|", "bulletedList", "numberedList", "|", "blockQuote"], "image": {"toolbar": ["imageTextAlternative", "|", "imageStyle:alignLeft", "imageStyle:alignRight", "imageStyle:alignCenter", "imageStyle:side", "|", "toggleImageCaption", "|"], "styles": ["full", "side", "alignLeft", "alignRight", "alignCenter"], "uploadUrl": "/ckeditor/"}, "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties"], "tableProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}, "tableCellProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}}, "heading": {"options": [{"model": "paragraph", "title": "Paragraph", "class": "ck-heading_paragraph"}, {"model": "heading1", "view": "h1", "title": "Heading 1", "class": "ck-heading_heading1"}, {"model": "heading2", "view": "h2", "title": "Heading 2", "class": "ck-heading_heading2"}, {"model": "heading3", "view": "h3", "title": "Heading 3", "class": "ck-heading_heading3"}]}, "list": {"properties": {"styles": true, "startIndex": true, "reversed": true}}, "htmlSupport": {"allow": [{"name": "/.*/", "attributes": true, "classes": true, "styles": true}]}}</script></span>
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_form-__prefix__-marks">Marks:</label></th>
+    <td>
+      
+      <input type="number" name="form-__prefix__-marks" id="id_form-__prefix__-marks">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_form-__prefix__-DELETE">Delete:</label></th>
+    <td>
+      
+      <input type="checkbox" name="form-__prefix__-DELETE" id="id_form-__prefix__-DELETE">
+      
+      
+        <input type="hidden" name="form-__prefix__-id" id="id_form-__prefix__-id">
+      
+    </td>
+  </tr>
+</div>
+
+<script>
+   const blankFormEl = document.querySelector("#blank-form")
+   const attachmentContainer = document.querySelector("#attachments")
+   const addAttachmentBtn = document.querySelector("#add-attachment-btn")
+   const managementFormInputEl = document.querySelector("#id_form-TOTAL_FORMS")
+   addAttachmentBtn.addEventListener("click", handleAttachmentBtnClick)
+    function cloneBlankForm(){
+        if (blankFormEl) {
+            const newBlankForm = blankFormEl.cloneNode(true)
+            const totalFormValue = parseInt(managementFormInputEl.value)
+            var formRegex = new RegExp(`__prefix__`, 'g');
+            newBlankForm.innerHTML = newBlankForm.innerHTML.replace(formRegex, totalFormValue)
+            managementFormInputEl.value = totalFormValue + 1
+            newBlankForm.classList.add("attachment-form")
+            newBlankForm.classList.remove("hidden")
+            newBlankForm.removeAttribute("id")
+            // console.log(newBlankForm)
+            return newBlankForm
+        }
+    }
+
+    function handleAttachmentBtnClick(event) {
+        if (event){
+            event.preventDefault()
+        }
+        const newForm = cloneBlankForm()
+        attachmentContainer.appendChild(newForm)
+    }
+
+</script>
+
+
+
+
+    </div>
+
+    
+<footer class=" bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+    <div class="w-full mx-auto container md:p-6 p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/" class="hover:underline">Interview Forum</a>. All Rights Reserved.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+        <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+        </li>
+        <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+        </li>
+        <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
+        </li>
+        <li>
+            <a href="#" class="hover:underline">Contact</a>
+        </li>
+    </ul>
+    </div>
+</footer>
+
+    
+
+
+
+    <script src="/static/vendor/htmx/htmx.min.js" preload></script>
+
+    <script src="/static/vendor/flowbite/flowbite.min.js" preload></script>
+
+     
+</body>
+
+</html>

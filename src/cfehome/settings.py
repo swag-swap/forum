@@ -24,9 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("DJANGO_SECRET_KEY", default=None) 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
+ALLOWED_HOST = config("ALLOWED_HOST", cast=str, default="")
+if ALLOWED_HOST:
+    ALLOWED_HOSTS.append(ALLOWED_HOST.strip())
 
 
 # Application definition
@@ -136,11 +139,11 @@ CLOUDINARY_STORAGE = {
 # https://docs.djangoproject.com/en/5.0/howto/static-files/ 
  
 
-STATICFILES_DIRS = [BASE_DIR / "static"] 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR.parent/ "local-cdn" / "static"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent/ "local-cdn" / "media" 
-STATIC_ROOT = BASE_DIR.parent/ "local-cdn" / "static"
 
 
 # print(config('CLOUD_NAME'),default=None)
@@ -154,7 +157,8 @@ from .ckeditor import *
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 # CKEDITOR_5_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-CKEDITOR_5_FILE_STORAGE_PATH = 'ckeditor/'
+CKEDITOR_5_FILE_STORAGE_PATH = 'ckeditor/' 

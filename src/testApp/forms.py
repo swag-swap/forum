@@ -9,16 +9,22 @@ input_css_class = "form-control"
 class TestForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ['title', 'start_time', 'duration','content']
+        fields = ['title', 'start_time', 'end_time','content']
         widgets = {
-            "content": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"}, config_name="extends"
-            )
-        } 
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+        # widgets = {
+        #     "content": CKEditor5Widget(
+        #         attrs={"class": "django_ckeditor_5"}, config_name="extends"
+        #     )
+        # } 
  
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)  
-        self.fields["content"].required = False
+        self.fields["content"].required = False 
+        # self.fields["content"].widget.attrs['id'] = "summernote"
+
         # for field in self.fields:
         #     if field in ['content']:
         #         continue
@@ -28,8 +34,10 @@ class TestForm(forms.ModelForm):
 class TestUpdateForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ["title", 'start_time', 'duration', 'content']
+        fields = ["title", 'start_time', 'end_time', 'content'] 
         widgets = {
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             "content": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
             )
@@ -38,6 +46,8 @@ class TestUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["content"].required = False
+        self.fields['start_time'].widget.attrs['type'] = 'datetime-local'
+        self.fields['end_time'].widget.attrs['type'] = 'datetime-local'
         # for field in self.fields:
         #     if field in ['content']:
         #         continue
@@ -49,11 +59,11 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ["question_type", 'text', 'marks']
-        widgets = {
-            "text": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"}, config_name="extends"
-            )
-        } 
+        # widgets = {
+        #     "text": CKEditor5Widget(
+        #         attrs={"class": "django_ckeditor_5"}, config_name="extends"
+        #     )
+        # } 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -86,11 +96,11 @@ class OptionForm(forms.ModelForm):
     class Meta:
         model = Option
         fields = ["text", "is_correct"]
-        widgets = {
-            "text": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"}, config_name="extends"
-            )
-        } 
+        # widgets = {
+        #     "text": CKEditor5Widget(
+        #         attrs={"class": "django_ckeditor_5"}, config_name="extends"
+        #     )
+        # } 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -111,5 +121,14 @@ QuestionOptionInlineFormSet = inlineformset_factory(
     formset = QuestionOptionModelFormSet,
     fields = ["text", "is_correct"],
     extra=0,
+    can_delete=True
+)
+
+OptionFormSet = inlineformset_factory(
+    Question,
+    Option,
+    form=OptionForm,
+    fields=['text', 'is_correct'],
+    extra=1,  # Number of extra empty forms
     can_delete=True
 )

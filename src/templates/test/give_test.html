@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="custom-heading">{{ test_title }}</h1>
+
+<div id="test-container"> </div>
+<div id="question-container"></div>
+<div class="btn-submit mt-5  hidden" id="submit">Submit Test</div>
+
+<script>  
+    let data;
+    async function fetchTestData() {
+        try {
+            const response = await fetch(`/test/get-test-data/{{ test_slug }}`);
+            data = await response.json();  
+            startTest(data);
+        } catch (error) {
+            console.error('Error fetching test data:', error);
+        } 
+    } 
+    fetchTestData();
+    
+    function startTest(data) {
+        const currentTime = new Date().getTime();
+        const startTime = new Date(data.start_time.replace(' ', 'T')).getTime();
+        const endTime = new Date(data.end_time.replace(' ', 'T')).getTime(); 
+        if (currentTime < startTime) { 
+            const timeDifference = Math.max(startTime - currentTime, 0); 
+            if (timeDifference <= 1000) { 
+                alert("Test is started!");
+                window.location.reload(); 
+            }
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            
+            const timeout = setTimeout(() => startTest(data), 1000);
+            document.getElementById('test-container').textContent = `Test will start in ${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`; 
+        } else if (currentTime > endTime) { 
+            document.getElementById('test-container').textContent = 'Test has ended';
+        } else {
+            renderTestQuestions(data.questions);
+        }
+    }
+
+    function renderTestQuestions(questions) {
+        const testContainer = document.getElementById('test-container');
+        const questionsDiv = document.createElement('div');
+        testContainer.innerHTML = '';
+        
+        questions.forEach(question => {
+            const questionButton = document.createElement('button');
+            questionButton.textContent = `Question ${question.id}`;
+            questionButton.setAttribute("class","btn-submit m-4")
+            questionButton.addEventListener('click', () => showQuestion(question));
+            questionsDiv.appendChild(questionButton);
+        }); 
+        testContainer.appendChild(questionsDiv);
+        const btn = document.getElementById('submit');
+        btn.setAttribute('class','btn-submit mt-5');
+    }
+
+    // Showing and handling all the question data
+    function showQuestion(question) { 
+        const testContainer = document.getElementById('question-container');
+        testContainer.innerHTML = ''; 
+
+        const questionId = question.id;
+        const questionDiv = document.createElement('div');
+        questionDiv.innerHTML = `
+            <h2 class='custom-heading'>Question ${questionId}</h2>
+            <p class='custom-text-bold'>Question: ${question.text}</p>
+            <p class='custom-text-bold'>Type: ${question.type}</p>
+        `;
+
+        if (question.type === 'MCQ') {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.setAttribute('class','option-text');
+            question.options.forEach(option => {
+                const optionId = option.id;
+                const brElement = document.createElement('br');
+                const optionRadio = document.createElement('input');
+                optionRadio.type = 'radio';
+                optionRadio.name = `question-${questionId}`;
+                optionRadio.value = optionId;
+                optionRadio.id = optionId; 
+                
+                const optionLabel = document.createElement('label');
+                optionLabel.textContent = option.text;
+                optionLabel.htmlFor = optionId; 
+                
+                optionsDiv.appendChild(optionRadio);
+                optionsDiv.appendChild(optionLabel);
+                optionsDiv.appendChild(brElement);
+                (optionRadio).addEventListener("click",(e) => { 
+                    question.options.forEach(otherOption => {
+                        otherOption.is_correct = (otherOption.id === optionId);
+                    });
+                    // console.log(question, option.id, option.is_correct);
+                })
+            });
+            
+            questionDiv.appendChild(optionsDiv);
+        } else if (question.type === 'MSQ') {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.setAttribute('class','option-text flex flex-col col-2');
+            question.options.forEach(option => {
+                const optionId = option.id;
+                const brElement= document.createElement('br');
+                const optionCheckbox = document.createElement('input');
+                optionCheckbox.type = 'checkbox';
+                optionCheckbox.name = `question-${questionId}`;
+                optionCheckbox.value = optionId;
+                optionCheckbox.id = optionId;
+                optionCheckbox.checked = (option.is_correct == false)? false:true
+                
+                const optionLabel = document.createElement('label');
+                optionLabel.textContent = option.text;
+                optionLabel.htmlFor = optionId;
+                
+                optionsDiv.appendChild(optionCheckbox);
+                optionsDiv.appendChild(optionLabel);
+                optionsDiv.appendChild(brElement);
+                ( optionCheckbox).addEventListener("click",() => {
+                    if (option.is_correct == true) {
+                        option.is_correct = false;
+                    }
+                    else {
+                        option.is_correct = true;
+                    } 
+                    // console.log(option.id, option.is_correct);
+                }) 
+            });
+            
+            questionDiv.appendChild(optionsDiv);
+        } else if (question.type === 'THEORY') {
+            const theoryInput = document.createElement('textarea');
+            theoryInput.name = `question-${question.id}`;
+            theoryInput.placeholder = 'Write your answer here...';
+            theoryInput.rows = 4;
+            theoryInput.className = 'text-custom-area'
+            theoryInput.addEventListener('change', (event) => {
+                const text = event.target.value;
+                question.options[0].text = text;
+                // console.log(question);
+            });
+            questionDiv.appendChild(theoryInput);
+        }
+
+        testContainer.appendChild(questionDiv);
+    }
+
+    // Handling the submit test.
+    async function submitTest() {
+        console.log(data);
+        
+        const filteredData = {
+            'test_slug': data.test_title,
+            'submitted_time': new Date().getTime(),
+            'questions': []
+        };
+
+        data.questions.forEach(question => {
+            const qData = {
+                'id': question.id,
+                'options': []
+            };
+            if (question.type === 'MCQ' || question.type === 'MSQ') {
+                question.options.forEach(option => {
+                    if(option.is_correct == true) qData.options.push({'id': option.id, 'is_correct': option.is_correct});
+                });
+            } else if (question.type === 'THEORY') {
+                question.options.forEach(option => {
+                    qData.options.push({'id': option.id, 'text': option.text});
+                });
+            }
+            filteredData.questions.push(qData);
+        });
+
+        // console.log(filteredData);
+
+        try {
+            const response = await fetch(`/test/submit-test/{{ test_slug }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'   
+                },
+                body: JSON.stringify({ responses: filteredData })   
+            });
+            if (response.ok) {
+                alert('Test submitted successfully!');
+                window.location.href = '/test/view-score/{{ test_slug }}';
+            } else {
+                console.error('Error submitting test:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error submitting test:', error);
+        }
+    }
+
+    document.getElementById('submit').addEventListener('click', () => {
+        if(confirm("Are you sure to submit test?")){
+            submitTest();
+        }
+    });
+    
+</script>
+
+{% endblock %}

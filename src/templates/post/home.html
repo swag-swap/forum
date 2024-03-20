@@ -1,59 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
+
+<form id="searchForm" method="get" class=" max-w-md mx-auto">   
+    <label for="id_query" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="flex "> 
+        <input type="text" name="query" id="id_query" class="block  p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts..." required />
+        <a href="{% url 'posts' %}" class="text-white end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</a>
+    </div>
+</form>
  
- 
-<form id="searchForm" method="get"  class="form-inline mx-auto justify-content-center width-full mt-3">
+<!-- <form id="searchForm" method="get"  class="form-inline mx-auto justify-content-center width-full mt-3">
     <div class="form-group mb-2">
         <label  for="id_query" class="sr-only">Search</label>
         <input type="text" name="query" placeholder="Search" required id="id_query"
             class="form-control">
     </div>
     <a href="{% url 'posts' %}"  class="btn btn-primary mb-2">Search</a>
-</form>
+</form> -->
 
-<div class="container w-full">
-    <div class="row">
-
-        <!-- Blog Entries Column -->
-        <div class="col-md-12 mt-3 ">
-            {% for post in posts %}
-            <a href="{% url 'post_detail' slug=post.slug  %}" style="text-decoration: none; color: black;" >
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ post.title|slice:":200" }}</h2>
-                        <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
-                        <div>
-                            <p class="card-text">
-                                <span>{{ post.text|striptags|slice:":200" }}</span>...
-                            </p>
-                        </div>
-                        </br>
-                        <div>
-
-                            <button class=" btn btn-primary"> 
-                                Read More &rarr;
-                            </button>
-                        </div>
+<section class="bg-white dark:bg-gray-900">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+        <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
+            <h2
+                class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
+            >
+                Posts
+            </h2> 
+        </div>
+        <div class="grid gap-8  md:grid-cols-2">
+            {% for post in posts %} 
+                <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700"> 
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <a href="{% url 'post_detail' slug=post.slug  %}">{{ post.title|slice:":200" }}</a>
+                        </h3>
+                        <span class="text-gray-500 dark:text-gray-400">{{ post.author }} | {{ post.created_on}}</span>
+                        <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">{{ post.text|striptags|slice:":200" }} ...</p>
+                        <a href="{% url 'post_detail' slug=post.slug  %}" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">View Post</a>
                     </div>
-
                 </div>
-            </a>
             {% endfor %}
         </div>
     </div>
-</div>
+</section> 
+
 
 <nav aria-label="Page navigation container">
 
-<ul class="pagination justify-content-center">
+<ul class="flex justify-center items-center h-screen">
     {% if posts.has_previous %}
-    <li><a href="?page={{ posts.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+    <li><a href="?page={{ posts.previous_page_number }}" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">&laquo; PREV </a></li>
     {% endif %}
     {% if posts.has_next %}
-    <li><a href="?page={{ posts.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+    <li><a href="?page={{ posts.next_page_number }}" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"> NEXT &raquo;</a></li>
 
     {% endif %}
 </ul>
+</nav>
+
+  
 
 {%endblock%}

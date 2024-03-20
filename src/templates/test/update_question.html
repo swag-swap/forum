@@ -1,0 +1,39 @@
+{% block content %}
+
+
+<form  class='space-y-5' id="question-form" method="POST"  enctype="multipart/form-data">
+    {{ form.media }}  
+    {% csrf_token %}
+    <h1 class="font-bold">Question id: {{question_id}}</h1>
+    <div>
+    {{ form.as_p }}
+    </div>
+
+
+    <div>
+        {{ formset.management_form }}
+        <div class="pb-3 border-b space-y-3" id="attachments">
+            {% for form in formset %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button class="btn-submit mt-2" id="add-attachment-btn">Add Option</button>
+
+    <button type="submit" id="submit-btn" class="btn-submit mt-2">Save and next</button>
+</form>
+
+
+<div class="hidden" id="blank-form">
+    {{ formset.empty_form }}
+</div>
+ 
+
+
+
+{% endblock %}
+
+
